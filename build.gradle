@@ -28,6 +28,22 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    gatling {
+        dependencies {
+            dependencySet(group: 'io.netty', version: '4.0.51.Final') {
+                entry 'netty-codec-http'
+                entry 'netty-codec'
+                entry 'netty-handler'
+                entry 'netty-buffer'
+                entry 'netty-transport'
+                entry 'netty-common'
+                entry 'netty-transport-native-epoll'
+            }
+        }
+    }
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")

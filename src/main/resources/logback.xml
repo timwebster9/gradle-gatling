@@ -2,7 +2,22 @@
 <configuration>
 
 	<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	<!-- Uncomment for logging ALL HTTP request and responses -->
+	<!-- 	<logger name="io.gatling.http.ahc" level="TRACE" /> -->
+	<!--    <logger name="io.gatling.http.response" level="TRACE" /> -->
+
+	<!-- Uncomment for logging ONLY FAILED HTTP request and responses -->
+	<logger name="io.gatling.http.ahc" level="DEBUG" />
+	<logger name="io.gatling.http.response" level="DEBUG" />
 
 	<!-- logger name="org.springframework" level="DEBUG"/-->
-
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<immediateFlush>true</immediateFlush>
+		</encoder>
+	</appender>
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE"/>
+	</root>
 </configuration>
