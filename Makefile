@@ -11,3 +11,6 @@ run:
 
 stop:
 	docker-compose down
+
+gatling:
+	./gradlew gatlingRun
