@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  jenkins:
+    image: timw/gatling
+    ports:
+      - 8080:8080
