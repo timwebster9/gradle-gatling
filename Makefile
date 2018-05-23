@@ -6,8 +6,11 @@ image: gradle-build
 gradle-build:
 	./gradlew build
 
-run:
+start:
 	docker-compose up -d && docker-compose logs -f
+
+run:
+	./gradlew bootRun
 
 stop:
 	docker-compose down
