@@ -3,6 +3,26 @@ pipeline {
     agent none
 
     stages {
+		stage('Docker Test') {
+			agent {
+				kubernetes {
+					label 'docker'
+					inheritFrom 'base'
+					containerTemplate {
+						name 'docker'
+						image 'docker:18.05.0-ce-git'
+						ttyEnabled true
+						command 'cat'
+					}
+				}
+			}
+			steps {
+                script {
+                    sh("docker info")
+                }
+			}
+		}
+		/*
         stage('Gradle Build') {
         	agent {
                 kubernetes {
@@ -48,7 +68,6 @@ pipeline {
 				//}
 			}
 		}
-        /*
 		stage('Start App') {
 			steps {
 				script {
