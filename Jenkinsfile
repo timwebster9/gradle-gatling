@@ -78,6 +78,22 @@ spec:
                 }
             }
         }
+        stage('Performance Test') {
+            steps {
+                withEnv(['BASE_URL=http://boot-app-service.default']) {
+                    sh ''./gradlew gatlingRun'
+                }
+            }
+        }
+        stage('Tear Down') {
+            steps {
+                container('kubectl') {
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubectl delete -f spec.yaml'
+                }
+            }
+        }
+
 
         /*
         stage('Gradle Build') {
