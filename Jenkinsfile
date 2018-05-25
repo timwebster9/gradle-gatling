@@ -20,7 +20,7 @@ spec:
   - name: docker
     image: docker:18.05.0-ce-git
     securityContext:
-          privileged: true
+      privileged: true
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
