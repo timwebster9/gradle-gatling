@@ -21,6 +21,7 @@ spec:
     image: roffe/kubectl:v1.9.6
     command:
     - cat
+    tty: true
   - name: docker
     image: docker:18.05.0-ce-git
     volumeMounts:
