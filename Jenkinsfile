@@ -19,6 +19,8 @@ spec:
     tty: true
   - name: docker
     image: docker:18.05.0-ce-git
+    securityContext:
+          privileged: true
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
@@ -45,6 +47,9 @@ spec:
         stage('Docker Test') {
             steps {
                 container('docker') {
+
+                    sh 'docker info'
+
                     timeout(5) {
                         waitUntil {
                            script {
