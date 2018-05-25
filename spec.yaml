@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: boot-app-service
+spec:
+  selector:
+    app: boot-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boot-app
+spec:
+  selector:
+    matchLabels:
+      app: boot-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: boot-app
+    spec:
+      containers:
+      - image: timw/boot-app:1.0
+        name: boot-app
+        ports:
+        - containerPort: 8080
+          name: http
+
+
+
+

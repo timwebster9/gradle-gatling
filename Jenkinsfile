@@ -54,7 +54,7 @@ spec:
         stage('Docker Test') {
             steps {
                 container('docker') {
-                   sh 'docker build -t timw/boot-app .'
+                   sh 'docker build -t timw/boot-app:1.0 .'
                 }
             }
         }
