@@ -22,14 +22,15 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
-    volumes:
-    - name: docker-socket
-      hostPath:
-        path: /var/run/docker.sock
-        type: Socket
     command:
     - cat
     tty: true
+  volumes:
+  - name: docker-socket
+    hostPath:
+    path: /var/run/docker.sock
+    type: Socket
+
 """
     }
   }
