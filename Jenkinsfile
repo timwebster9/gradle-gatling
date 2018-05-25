@@ -61,7 +61,7 @@ spec:
         stage('kubectl test') {
             steps {
                 container('kubectl') {
-                   sh 'kubectl set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
                    sh 'kubectl get pods'
                 }
             }
