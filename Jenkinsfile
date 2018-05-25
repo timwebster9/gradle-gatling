@@ -17,11 +17,6 @@ spec:
     command:
     - cat
     tty: true
-  - name: gradle
-    image: gradle:4.7-jre8
-    command:
-    - cat
-    tty: true
   - name: kubectl
     image: roffe/kubectl:v1.9.6
     command:
