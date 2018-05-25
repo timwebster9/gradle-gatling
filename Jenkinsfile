@@ -31,7 +31,7 @@ pipeline {
 				timeout(5) {
                     waitUntil {
                        script {
-                         def r = sh script: 'wget -q http://locahost:8080 -O /dev/null', returnStatus: true
+                         def r = sh script: 'wget -q http://localhost:8080 -O /dev/null', returnStatus: true
                          return (r == 0);
                        }
                     }
