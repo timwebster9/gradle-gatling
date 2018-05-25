@@ -1,43 +1,35 @@
 pipeline {
 
-    agent none
-
+  agent {
+	kubernetes {
+	  label 'k8s'
+	  defaultContainer 'jnlp'
+	  yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+	some-label: some-label-value
+spec:
+  containers:
+  - name: java
+	image: openjdk:8-jdk-alpine
+	command:
+	- cat
+	tty: true
+  - name: docker
+	image: docker:18.05.0-ce-git
+	command:
+	- cat
+	tty: true
+"""
+	}
+  }
     stages {
-		stage('Docker Test') {
-			agent {
-				kubernetes {
-					label 'docker'
-					inheritFrom 'base'
-					containerTemplate {
-						name 'docker'
-						image 'docker:18.05.0-ce-git'
-						ttyEnabled true
-						command 'cat'
-					}
-				}
-			}
+		stage('Gradle Build') {
 			steps {
-                script {
-                    sh("docker info")
-                }
-			}
-		}
-		stage('Docker Test 2') {
-			agent {
-				kubernetes {
-					label 'docker2'
-					inheritFrom 'base'
-					containerTemplate {
-						name 'docker2'
-						image 'docker:18.05.0-ce-git'
-						ttyEnabled true
-						command 'cat'
-					}
-				}
-			}
-			steps {
-				script {
-					sh("docker info")
+				container('java') {
+					sh './gradlew build'
 				}
 			}
 		}
