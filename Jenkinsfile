@@ -1,24 +1,28 @@
 pipeline {
-    agent {
-        kubernetes {
-            label 'k8s'
-            inheritFrom 'base'
-            containerTemplate {
-                name 'java'
-                image 'openjdk:8-jdk-alpine'
-                ttyEnabled true
-                command 'cat'
-            }
-        }
-    }
+
+    agent none
+
     stages {
         stage('Build') {
+        	agent {
+                kubernetes {
+                    label 'k8s'
+                    inheritFrom 'base'
+                    containerTemplate {
+                        name 'java'
+                        image 'openjdk:8-jdk-alpine'
+                        ttyEnabled true
+                        command 'cat'
+                    }
+                }
+            }
             steps {
                 script {
                     sh("./gradlew build")
                 }
             }
         }
+        /*
 		stage('Start App') {
 			steps {
 				script {
@@ -26,7 +30,6 @@ pipeline {
 				}
 			}
 		}
-		/*
 		stage('Wait for App') {
 			steps {
 				timeout(5) {
