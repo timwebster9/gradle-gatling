@@ -44,20 +44,8 @@ spec:
         stage('Docker Test') {
             steps {
                 container('docker') {
-
-                   // sh 'docker info'
-
-                    timeout(5) {
-                        waitUntil {
-                           script {
-                             return false;
-                           }
-                        }
-                    }
+                   sh 'docker info'
                 }
-                //container('docker') {
-                //    sh 'docker info'
-                //}
             }
         }
         /*
