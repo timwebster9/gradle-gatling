@@ -22,10 +22,11 @@ pipeline {
 		stage('Start App') {
 			steps {
 				script {
-					sh("./gradlew bootRun &")
+					sh("./gradlew bootRun")
 				}
 			}
 		}
+		/*
 		stage('Wait for App') {
 			steps {
 				timeout(5) {
@@ -45,5 +46,6 @@ pipeline {
 				}
 			}
 		}
+		*/
     }
 }
