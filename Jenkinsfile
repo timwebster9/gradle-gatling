@@ -48,7 +48,7 @@ spec:
             steps {
                 container('docker') {
 
-                    sh 'docker info'
+                   // sh 'docker info'
 
                     timeout(5) {
                         waitUntil {
