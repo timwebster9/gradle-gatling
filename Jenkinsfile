@@ -3,10 +3,10 @@ pipeline {
     agent none
 
     stages {
-        stage('Build') {
+        stage('Gradle Build') {
         	agent {
                 kubernetes {
-                    label 'k8s'
+                    label 'java'
                     inheritFrom 'base'
                     containerTemplate {
                         name 'java'
@@ -22,6 +22,25 @@ pipeline {
                 }
             }
         }
+		stage('Docker Build') {
+			agent {
+				kubernetes {
+					label 'docker'
+					inheritFrom 'base'
+					containerTemplate {
+						name 'docker'
+						image 'docker:18.05.0-ce-git'
+						ttyEnabled true
+						command 'cat'
+					}
+				}
+			}
+			steps {
+				script {
+					sh("docker build -t timw/gradle-gatling .")
+				}
+			}
+		}
         /*
 		stage('Start App') {
 			steps {
