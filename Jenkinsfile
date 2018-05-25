@@ -19,6 +19,14 @@ spec:
     tty: true
   - name: docker
     image: docker:18.05.0-ce-git
+    volumeMounts:
+      - mountPath: /var/run/docker.sock
+        name: docker-socket
+    volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket
     command:
     - cat
     tty: true
@@ -30,6 +38,13 @@ spec:
             steps {
                 container('java') {
                     sh './gradlew build'
+                }
+            }
+        }
+        stage('Docker Test') {
+            steps {
+                container('docker') {
+                    sh 'docker info'
                 }
             }
         }
@@ -53,6 +68,7 @@ spec:
                 }
             }
         }
+
         stage('Docker Build') {
             agent {
                 kubernetes {
