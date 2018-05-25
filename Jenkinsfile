@@ -22,6 +22,25 @@ pipeline {
                 }
 			}
 		}
+		stage('Docker Test 2') {
+			agent {
+				kubernetes {
+					label 'docker2'
+					inheritFrom 'base'
+					containerTemplate {
+						name 'docker2'
+						image 'docker:18.05.0-ce-git'
+						ttyEnabled true
+						command 'cat'
+					}
+				}
+			}
+			steps {
+				script {
+					sh("docker info")
+				}
+			}
+		}
 		/*
         stage('Gradle Build') {
         	agent {
