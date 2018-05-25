@@ -81,7 +81,7 @@ spec:
         stage('Performance Test') {
             steps {
                 withEnv(['BASE_URL=http://boot-app-service.default']) {
-                    sh ''./gradlew gatlingRun'
+                    sh './gradlew gatlingRun'
                 }
             }
         }
