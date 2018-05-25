@@ -36,9 +36,16 @@ pipeline {
 				}
 			}
 			steps {
-				script {
-					sh("docker build -t timw/gradle-gatling .")
+				timeout(5) {
+					waitUntil {
+					   script {
+						 return false;
+					   }
+					}
 				}
+				//script {
+				//	sh("docker build -t timw/gradle-gatling .")
+				//}
 			}
 		}
         /*
