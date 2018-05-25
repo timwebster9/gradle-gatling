@@ -51,22 +51,33 @@ spec:
                 }
             }
         }
-        stage('Docker Test') {
+        stage('Docker Build') {
             steps {
                 container('docker') {
                    sh 'docker build -t timw/boot-app:1.0 .'
                 }
             }
         }
-        stage('kubectl test') {
+        stage('Deploy App') {
             steps {
                 container('kubectl') {
                    sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
-                   sh 'kubectl get pods'
+                   sh 'kubectl apply -f spec.yaml'
                 }
             }
         }
-
+        stage('Wait for App') {
+            steps {
+                timeout(5) {
+                    waitUntil {
+                       script {
+                         def r = sh script: 'wget -q http://boot-app-service.default -O /dev/null', returnStatus: true
+                         return (r == 0);
+                       }
+                    }
+                }
+            }
+        }
 
         /*
         stage('Gradle Build') {
