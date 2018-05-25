@@ -17,7 +17,7 @@ spec:
     command:
     - cat
     tty: true
-  - gradle:
+  - name: gradle
     image: gradle:4.7-jre8
     command:
     - cat
