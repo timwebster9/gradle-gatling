@@ -22,7 +22,7 @@ pipeline {
 		stage('Run App') {
 			steps {
 				script {
-					sh("./gradlew bootRun")
+					sh("./gradlew bootRun &")
 				}
 			}
 		}
