@@ -17,6 +17,10 @@ spec:
     command:
     - cat
     tty: true
+  - name: kubectl
+    image: roffe/kubectl:v1.9.6
+    command:
+    - cat
   - name: docker
     image: docker:18.05.0-ce-git
     volumeMounts:
@@ -48,6 +52,16 @@ spec:
                 }
             }
         }
+        stage('kubectl test') {
+            steps {
+                container('kubectl') {
+                   sh 'kubectl set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubcetl get pods'
+                }
+            }
+        }
+
+
         /*
         stage('Gradle Build') {
             agent {
