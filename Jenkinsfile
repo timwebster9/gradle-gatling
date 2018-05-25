@@ -19,10 +19,29 @@ pipeline {
                 }
             }
         }
-		stage('Run App') {
+		stage('Start App') {
 			steps {
 				script {
 					sh("./gradlew bootRun &")
+				}
+			}
+		}
+		stage('Wait for App') {
+			steps {
+				timeout(5) {
+                    waitUntil {
+                       script {
+                         def r = sh script: 'wget -q http://locahost:8080 -O /dev/null', returnStatus: true
+                         return (r == 0);
+                       }
+                    }
+                }
+			}
+		}
+		stage('Performance Test') {
+			steps {
+				script {
+					sh("./gradlew gatlingRun")
 				}
 			}
 		}
