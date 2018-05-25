@@ -12,12 +12,19 @@ pipeline {
         }
     }
     stages {
-        stage('say hello') {
+        stage('Build') {
             steps {
                 script {
                     sh("./gradlew build")
                 }
             }
         }
+		stage('Run App') {
+			steps {
+				script {
+					sh("./gradlew bootRun")
+				}
+			}
+		}
     }
 }
