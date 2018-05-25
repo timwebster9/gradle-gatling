@@ -46,8 +46,8 @@ spec:
     stages {
         stage('Gradle Build') {
             steps {
-                container('gradle') {
-                    sh 'gradle build'
+                container('java') {
+                    sh './gradlew build'
                 }
             }
         }
