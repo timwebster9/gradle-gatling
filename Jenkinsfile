@@ -17,6 +17,11 @@ spec:
     command:
     - cat
     tty: true
+  - gradle:
+    image: gradle:4.7-jre8
+    command:
+    - cat
+    tty: true
   - name: kubectl
     image: roffe/kubectl:v1.9.6
     command:
@@ -41,8 +46,8 @@ spec:
     stages {
         stage('Gradle Build') {
             steps {
-                container('java') {
-                    sh './gradlew build'
+                container('gradle') {
+                    sh 'gradle build'
                 }
             }
         }
