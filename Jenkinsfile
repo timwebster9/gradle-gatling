@@ -37,14 +37,14 @@ spec:
         stage('Gradle Build') {
             steps {
                 container('java') {
-                    sh 'java -version'
+                    sh './gradlew build'
                 }
             }
         }
         stage('Docker Test') {
             steps {
                 container('docker') {
-                   sh 'docker info'
+                   sh 'docker build -t timw/boot-app .'
                 }
             }
         }
