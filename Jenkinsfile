@@ -22,7 +22,7 @@ spec:
     securityContext:
       privileged: true
     volumeMounts:
-      - mountPath: /var/run/docker.sock
+      - mountPath: /var/run
         name: docker-socket
     command:
     - cat
@@ -30,7 +30,7 @@ spec:
   volumes:
   - name: docker-socket
     hostPath:
-    path: /var/run/docker.sock
+    path: /var/run
 
 """
     }
