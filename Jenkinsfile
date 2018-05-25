@@ -19,10 +19,8 @@ spec:
     tty: true
   - name: docker
     image: docker:18.05.0-ce-git
-    securityContext:
-      privileged: true
     volumeMounts:
-      - mountPath: /var/run
+      - mountPath: /var/run/docker.sock
         name: docker-socket
     command:
     - cat
@@ -30,7 +28,7 @@ spec:
   volumes:
   - name: docker-socket
     hostPath:
-    path: /var/run
+    path: /var/run/docker.sock
 
 """
     }
