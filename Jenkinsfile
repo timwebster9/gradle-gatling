@@ -39,6 +39,13 @@ spec:
     }
   }
     stages {
+        stage('Setup') {
+            steps {
+                script {
+                    env.NAMESPACE = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
+                }
+            }
+        }
         stage('Gradle Build') {
             steps {
                 container('java') {
@@ -66,7 +73,7 @@ spec:
                 timeout(5) {
                     waitUntil {
                        script {
-                         def r = sh script: 'wget -q http://boot-app-service.default -O /dev/null', returnStatus: true
+                         def r = sh script: "wget -q http://boot-app-service.${env.NAMESPACE} -O /dev/null", returnStatus: true
                          return (r == 0);
                        }
                     }
@@ -76,18 +83,18 @@ spec:
         stage('Performance Test') {
             steps {
                 container('java') {
-                    withEnv(['BASE_URL=http://boot-app-service.default']) {
+                    withEnv(["BASE_URL=http://boot-app-service.${env.NAMESPACE}"]) {
                         sh './gradlew gatlingRun'
                     }
                 }
             }
         }
-        stage('Tear Down') {
-            steps {
-                container('kubectl') {
-                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
-                   sh 'kubectl delete -f spec.yaml'
-                }
+    }
+    post {
+        always {
+            container('kubectl') {
+               //sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+               sh 'kubectl delete -f spec.yaml'
             }
         }
     }
