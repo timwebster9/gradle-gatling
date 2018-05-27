@@ -96,15 +96,13 @@ spec:
         }
         stage('Upload Gatling Reports') {
             steps {
-                conatiner('azcopy') {
+                container('azcopy') {
                     steps {
-                        container('java') {
-                            withCredentials([string(credentialsId: 'container-key', variable: 'CONTAINER_KEY')]) {
-                                sh "azcopy --source build/reports/gatling \
-                                           --destination https://test23894237923.blob.core.windows.net/gatling-store \
-                                           --dest-key ${CONTAINER_KEY} \
-                                           -- recursive"
-                            }
+                        withCredentials([string(credentialsId: 'container-key', variable: 'CONTAINER_KEY')]) {
+                            sh "azcopy --source build/reports/gatling \
+                                       --destination https://test23894237923.blob.core.windows.net/gatling-store \
+                                       --dest-key ${CONTAINER_KEY} \
+                                       -- recursive"
                         }
                     }
                 }
