@@ -12,6 +12,11 @@ metadata:
     some-label: some-label-value
 spec:
   containers:
+  - name: alpine
+    image: alpine:3.7
+    command:
+    - cat
+    tty: true
   - name: java
     image: openjdk:8-jdk-alpine
     command:
@@ -75,12 +80,14 @@ spec:
         }
         stage('Wait for App') {
             steps {
-                timeout(5) {
-                    waitUntil {
-                       script {
-                         def r = sh script: "wget -q http://boot-app-service.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
-                         return (r == 0);
-                       }
+                container('alpine') {
+                    timeout(5) {
+                        waitUntil {
+                           script {
+                             def r = sh script: "wget -q http://boot-app-service.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
+                             return (r == 0);
+                           }
+                        }
                     }
                 }
             }
