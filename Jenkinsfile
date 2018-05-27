@@ -102,7 +102,7 @@ spec:
                             sh "azcopy --source build/reports/gatling \
                                        --destination https://test23894237923.blob.core.windows.net/gatling-store \
                                        --dest-key ${CONTAINER_KEY} \
-                                       -- recursive"
+                                       --recursive"
                         }
                     }
                 }
