@@ -22,6 +22,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: azcopy
+    image: timwebster9/azcopy:v1.0
+    command:
+    - cat
+    tty: true
   - name: docker
     image: docker:18.05.0-ce-git
     volumeMounts:
@@ -85,6 +90,22 @@ spec:
                 container('java') {
                     withEnv(["BASE_URL=http://boot-app-service.${env.NAMESPACE}.svc.cluster.local"]) {
                         sh './gradlew gatlingRun'
+                    }
+                }
+            }
+        }
+        stage('Upload Gatling Reports') {
+            steps {
+                conatiner('azcopy') {
+                    steps {
+                        container('java') {
+                            withCredentials([string(credentialsId: 'container-key', variable: 'CONTAINER_KEY')]) {
+                                sh "azcopy --source build/reports/gatling \
+                                           --destination https://test23894237923.blob.core.windows.net/gatling-store \
+                                           --dest-key ${CONTAINER_KEY} \
+                                           -- recursive"
+                            }
+                        }
                     }
                 }
             }
