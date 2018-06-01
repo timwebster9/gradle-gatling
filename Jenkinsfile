@@ -101,6 +101,16 @@ spec:
                 }
             }
         }
+		stage('Upload Gatling Reports') {
+			steps {
+				container('java') {
+					script {
+					    azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gating-store', fileShareName: '', filesPath: 'build/reports/gatling', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
+					}
+				}
+			}
+		}
+        /*
         stage('Upload Gatling Reports') {
             steps {
                 container('azcopy') {
@@ -113,6 +123,7 @@ spec:
                 }
             }
         }
+        */
     }
     post {
         always {
