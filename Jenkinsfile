@@ -105,7 +105,7 @@ spec:
 			steps {
 				container('java') {
 					script {
-					    azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gating-store', fileShareName: '', filesPath: 'build/reports/gatling/*', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
+					    azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gating-store', fileShareName: '', filesPath: 'build/reports/gatling/**', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
 					}
 				}
 			}
