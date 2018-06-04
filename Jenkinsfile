@@ -101,19 +101,19 @@ spec:
                 }
             }
         }
-        /*
-		stage('Upload Gatling Reports') {
-			steps {
-				container('java') {
-					script {
-						dir('build/reports/gatling') {
-							azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gatling-store', fileShareName: '', filesPath: '**/*', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
-						}
-					}
-				}
-			}
-		}
-        */
+
+		//stage('Upload Gatling Reports') {
+		//	steps {
+		//		container('java') {
+		//			script {
+		//				dir('build/reports/gatling') {
+		//					azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gatling-store', fileShareName: '', filesPath: '**/*', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+
         stage('Upload Gatling Reports') {
             steps {
                 container('azcopy') {
