@@ -101,6 +101,7 @@ spec:
                 }
             }
         }
+        /*
 		stage('Upload Gatling Reports') {
 			steps {
 				container('java') {
@@ -112,20 +113,20 @@ spec:
 				}
 			}
 		}
-        /*
+        */
         stage('Upload Gatling Reports') {
             steps {
                 container('azcopy') {
                     withCredentials([string(credentialsId: 'container-key', variable: 'CONTAINER_KEY')]) {
                         sh "azcopy --source build/reports/gatling \
-                                   --destination https://test23894237923.blob.core.windows.net/gatling-store \
+                                   --destination https://test23894237923.blob.core.windows.net/new-container \
                                    --dest-key ${CONTAINER_KEY} \
                                    --recursive"
                     }
                 }
             }
         }
-        */
+
     }
     post {
         always {
