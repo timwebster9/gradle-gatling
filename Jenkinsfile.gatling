@@ -11,8 +11,6 @@ pipeline {
                 script {
                     withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/etc/gatling/user-files:/opt/gatling/user-files') {
 
-                        sh 'whoami'
-
                         sh 'ls -la /etc/gatling/conf'
 
                         sh 'ls -la /etc/gatling/user-files'
