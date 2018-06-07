@@ -21,7 +21,9 @@ pipeline {
 
                         sh 'gatling.sh -rf $WORKSPACE/build/gatling/reports -bf $WORKSPACE/build/gatling/binaries -m'
 
-                        sh 'ls -la /etc/gatling/target'
+                        sh 'ls -la $WORKSPACE/build/gatling/reports'
+
+                        sh 'ls -la $WORKSPACE/build/gatling/binaries'
                     }
 
                 }
