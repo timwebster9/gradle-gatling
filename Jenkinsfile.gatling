@@ -9,17 +9,17 @@ pipeline {
         stage('Gatling Test') {
             steps {
                 script {
-                    withDocker('denvazh/gatling:2.3.1', '-v $WORKSPACE/src/gatling/conf:/opt/gatling/conf -v $WORKSPACE/src/gatling/user-files:/opt/gatling/user-files') {
+                    withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/etc/gatling/user-files:/opt/gatling/user-files') {
 
-                        //sh 'whoami'
+                        sh 'whoami'
 
-                        //sh 'ls -la /etc/gatling/conf'
+                        sh 'ls -la /etc/gatling/conf'
 
-                        //sh 'ls -la /etc/gatling/user-files'
+                        sh 'ls -la /etc/gatling/user-files'
 
                         sh 'gatling.sh -rf build/reports/gatling -m'
 
-                        //sh 'ls -la build/reports/gatling'
+                        sh 'ls -la build/reports/gatling'
                     }
 
                 }
