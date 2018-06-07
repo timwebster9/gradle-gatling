@@ -33,7 +33,7 @@ pipeline {
         stage('Azure upload') {
             steps {
                 script {
-                    withDocker('hmcts/moj-azcopy-image') {
+                    withDocker('hmcts/moj-azcopy-image', null) {
                         withCredentials([usernamePassword(credentialsId: "storage-key", passwordVariable: 'STORAGE_ACCOUNT_KEY', usernameVariable: 'STORAGE_ACCOUNT_NAME')]) {
                             sh "azcopy --source $WORKSPACE/build/gatling/reports \
                                 --destination https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/gatling-store/jenkins-test \
