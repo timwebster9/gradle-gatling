@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gating/conf') {
-                        sh 'gatling.sh -sf src/gatling/simulations -df src/gatling/data -bdf src/gatling/bodies -rf build/reports/gatling -m'
+                        sh 'gatling.sh -sf $WORKSPACE/src/gatling/simulations -df $WORKSPACE/src/gatling/data -bdf $WORKSPACE/src/gatling/bodies -rf $WORKSPACE/build/reports/gatling -m'
                     }
 
                 }
