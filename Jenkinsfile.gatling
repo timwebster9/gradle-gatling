@@ -11,7 +11,7 @@ pipeline {
                 script {
                     withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/src/gatling/user-files:/etc/gatling/user-files') {
 
-                        echo 'JAVA_HOME: $JAVA_HOME'
+                        echo sh(returnStdout: true, script: 'env')
 
                         sh 'ls -la /etc/gatling/user-files'
 
