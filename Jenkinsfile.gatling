@@ -19,7 +19,7 @@ pipeline {
 
                         sh 'ls -la /etc/gatling/user-files'
 
-                        sh 'gatling.sh -rf $WORKSPACE/build/gatling/reports'
+                        sh 'gatling.sh -m -rf $WORKSPACE/build/gatling/reports'
 
                     }
 
