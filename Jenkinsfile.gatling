@@ -9,7 +9,7 @@ pipeline {
         stage('Gatling Test') {
             steps {
                 script {
-                    withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/src/gatling/user-files:/etc/gatling/user-files') {
+                    withDocker('hmcts/moj-gatling-image', '-u root -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/src/gatling/user-files:/etc/gatling/user-files') {
 
                         sh 'ls -la /etc'
 
