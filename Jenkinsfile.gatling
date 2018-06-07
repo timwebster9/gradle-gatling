@@ -21,7 +21,7 @@ pipeline {
 
                         sh 'gatling.sh -rf build/reports/gatling -m'
 
-                        sh 'ls -la build/reports/gatling'
+                        sh 'ls -la /etc/gatling/target'
                     }
 
                 }
