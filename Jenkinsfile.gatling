@@ -13,6 +13,8 @@ pipeline {
 
                         echo sh(returnStdout: true, script: 'env')
 
+                        sh 'ls -la /etc/gatling/conf'
+
                         sh 'ls -la /etc/gatling/user-files'
 
                         sh 'gatling.sh -rf build/reports/gatling -m'
