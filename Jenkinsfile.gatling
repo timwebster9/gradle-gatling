@@ -1,0 +1,66 @@
+pipeline {
+
+    agent {
+        node {
+            label 'mac'
+        }
+    }
+    stages {
+        stage('Gatling Test') {
+            steps {
+                script {
+                    withDocker('hmcts/moj-gatling-image', '-v $WORKSPACE/src/gatling/conf:/etc/gating/conf') {
+                        sh 'gatling.sh -sf src/gatling/simulations -df src/gatling/data -bdf src/gatling/bodies -rf build/reports/gatling -m'
+                    }
+
+                }
+            }
+        }
+        /*
+        stage('Docker Build') {
+            steps {
+                container('docker') {
+                   sh 'docker build -t timw/boot-app:1.0 .'
+                }
+            }
+        }
+        stage('Deploy App') {
+            steps {
+                container('kubectl') {
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubectl apply -f spec.yaml'
+                }
+            }
+        }
+        stage('Wait for App') {
+            steps {
+                timeout(5) {
+                    waitUntil {
+                       script {
+                         def r = sh script: 'wget -q http://boot-app-service.default -O /dev/null', returnStatus: true
+                         return (r == 0);
+                       }
+                    }
+                }
+            }
+        }
+        stage('Performance Test') {
+            steps {
+                container('java') {
+                    withEnv(['BASE_URL=http://boot-app-service.default']) {
+                        sh './gradlew gatlingRun'
+                    }
+                }
+            }
+        }
+        stage('Tear Down') {
+            steps {
+                container('kubectl') {
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubectl delete -f spec.yaml'
+                }
+            }
+        }
+        */
+    }
+}
