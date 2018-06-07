@@ -28,7 +28,7 @@ Set an environment variable for your base URL:
 
     export BASE_URL=http://localhost:8080
     
-You can see how to parameterise URLs in `src/gatling/scala/default/Environments.scala`.  For example:
+You can see how to parameterise URLs in `src/gatling/scala/simulations.default/Environments.scala`.  For example:
 
     val baseUrl : String = scala.util.Properties.envOrElse("BASE_URL","http://localhost:8080")
     

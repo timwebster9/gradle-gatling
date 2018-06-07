@@ -73,7 +73,7 @@ spec:
         stage('Deploy App') {
             steps {
                 container('kubectl') {
-                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.simulations.default.svc'
                    sh 'kubectl apply -f spec.yaml'
                 }
             }
@@ -131,7 +131,7 @@ spec:
     post {
         always {
             container('kubectl') {
-               //sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
+               //sh 'kubectl config set-cluster k8s --server=https://kubernetes.simulations.default.svc'
                sh 'kubectl delete -f spec.yaml'
             }
         }
