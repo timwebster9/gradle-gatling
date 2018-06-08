@@ -16,7 +16,11 @@ pipeline {
                 script {
                     withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '-u root -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf -v $WORKSPACE/src/gatling/user-files:/etc/gatling/user-files') {
 
-                        sh 'ls -la /etc'
+
+                        waitUntil {
+                            // some block
+                        }
+
 
                         sh 'ls -la /etc/gatling'
 
