@@ -1,9 +1,11 @@
 node('mac') {
 
-    checkout scm
-
     stage('cleanup') {
         deleteDir()
+    }
+
+    stage('Checkout') {
+        checkout scm
     }
 
     stage('Gatling Test') {
