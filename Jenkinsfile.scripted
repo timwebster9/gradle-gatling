@@ -18,7 +18,7 @@ node('mac') {
 
             sh 'ls -la /etc/gatling/user-files'
 
-            sh 'gatling.sh -m -rf /etc/gatling/reports'
+            sh 'gatling.sh -m -rf build/gatling/reports'
 
         }
 
