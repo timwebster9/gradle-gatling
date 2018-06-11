@@ -18,7 +18,7 @@ node('mac') {
 
             sh 'ls -la /etc/gatling/user-files'
 
-            env.BASE_URL='http://'
+            env.BASE_URL='http://host.docker.internal:8080'
 
             sh 'gatling.sh -m -sf $WORKSPACE/src/gatling/simulations -df $WORKSPACE/src/gatling/data -bdf $WORKSPACE/src/gatling/bodies \
                            -bf $WORKSPACE/build/gatling/binaries -rf $WORKSPACE/build/gatling/reports'
