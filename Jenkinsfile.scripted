@@ -9,7 +9,7 @@ node('mac') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '--network=\"host\" -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
+        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '--network="host" -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
 
 
             sh 'ls -la /etc/gatling'
@@ -17,6 +17,8 @@ node('mac') {
             sh 'ls -la /etc/gatling/conf'
 
             sh 'ls -la /etc/gatling/user-files'
+
+            env.BASE_URL='http://'
 
             sh 'gatling.sh -m -sf $WORKSPACE/src/gatling/simulations -df $WORKSPACE/src/gatling/data -bdf $WORKSPACE/src/gatling/bodies \
                            -bf $WORKSPACE/build/gatling/binaries -rf $WORKSPACE/build/gatling/reports'
@@ -32,7 +34,7 @@ node('mac') {
                 sh "azcopy --source $WORKSPACE/build/gatling/reports \
                 --destination https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/gatling-store/jenkins-test \
                 --dest-key ${STORAGE_ACCOUNT_KEY} \
-                        --recursive"
+                --set-content-type --recursive"
             }
         }
     }
