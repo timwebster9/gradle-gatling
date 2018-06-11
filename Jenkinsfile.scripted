@@ -9,7 +9,7 @@ node('mac') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '--network="host" -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
+        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '--network=\"host\" -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
 
 
             sh 'ls -la /etc/gatling'
