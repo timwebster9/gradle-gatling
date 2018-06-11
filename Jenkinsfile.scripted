@@ -9,7 +9,7 @@ node('mac') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '-u root -v $WORKSPACE/src/gatling/conf/etc/gatling/conf -v $WORKSPACE/src/gatling/user-files:/etc/gatling/user-files') {
+        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '-u root -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
 
 
             sh 'ls -la /etc/gatling'
@@ -18,7 +18,7 @@ node('mac') {
 
             sh 'ls -la /etc/gatling/user-files'
 
-            sh 'gatling.sh -m -rf $WORKSPACE/build/gatling/reports'
+            sh 'gatling.sh -m -sf $WORKSPACE/src/gatling/simulations -df $WORKSPACE/src/gatling/data -bdf $WORKSPACE/src/gatling/bodies -rf $WORKSPACE/build/gatling/reports'
 
         }
 
