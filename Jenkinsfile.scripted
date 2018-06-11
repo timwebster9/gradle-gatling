@@ -27,7 +27,7 @@ node('mac') {
 
         sh 'ls -la $WORKSPACE/build/gatling/reports'
 
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'reports/gatling/**/*.html', reportFiles: 'index.html', reportName: 'Gatling Report', reportTitles: ''])
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/gatling/reports', reportFiles: 'index.html', reportName: 'Gatling Report', reportTitles: ''])
 
     }
     stage('Azure upload') {
