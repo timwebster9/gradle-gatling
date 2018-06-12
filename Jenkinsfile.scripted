@@ -28,7 +28,7 @@ node('mac') {
         sh 'ls -la $WORKSPACE/build/gatling/reports'
 
 
-        gatlingArchive()
+
 
         withCredentials([string(credentialsId: 'cosmosKey', variable: 'COSMOS_KEY')]) {
 
@@ -39,6 +39,8 @@ node('mac') {
                                      product: 'some-webapp',
                                      component: 'backend'])
         }
+
+        gatlingArchive()
 
 
 
