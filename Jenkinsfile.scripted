@@ -23,9 +23,10 @@ node('mac') {
             env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
             env.COSMOSDB_TOKEN_KEY = "${COSMOS_KEY}"
 
-            publishToCosmosDb(this, [environment: 'dev',
-                                     product: 'some-webapp',
-                                     component: 'backend'])
+            publishToCosmosDb(this,
+                              [environment: 'dev', product: 'some-webapp', component: 'backend'],
+                              "${WORKSPACE}/build/gatling/reports",
+                              '**/*.json')
         }
 
         gatlingArchive()
