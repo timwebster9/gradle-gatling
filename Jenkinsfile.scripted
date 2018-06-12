@@ -30,9 +30,17 @@ node('mac') {
 
         gatlingArchive()
 
-        publishToCosmosDb(this, [environment: 'dev',
-                                 product: 'some-webapp',
-                                 component: 'backend'])
+        withCredentials([string(credentialsId: 'cosmosKey', variable: 'COSMOS_KEY')]) {
+
+            env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
+            env.COSMOSDB_TOKEN_KEY = '$COSMOS_KEY'
+
+            publishToCosmosDb(this, [environment: 'dev',
+                                     product: 'some-webapp',
+                                     component: 'backend'])
+        }
+
+
 
         //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/gatling/reports', reportFiles: 'index.html', reportName: 'Gatling Report', reportTitles: ''])
 
