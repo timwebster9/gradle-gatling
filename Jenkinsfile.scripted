@@ -30,6 +30,10 @@ node('mac') {
 
         gatlingArchive()
 
+        publishToCosmosDb(this, [environment: environment.prodName,
+                                 product: product,
+                                 component: component])
+
         //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/gatling/reports', reportFiles: 'index.html', reportName: 'Gatling Report', reportTitles: ''])
 
     }
