@@ -22,17 +22,15 @@ node('mac') {
         //azureBlobUpload('buildlog-storage-account', Gatling.GATLING_REPORTS_DIR, "performance/${product}-${component}/${environment}")
 
         // publish metrics to CosmosDB
-        withCredentials([string(credentialsId: 'cosmosKey', variable: 'COSMOS_KEY')]) {
-            env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
-            env.COSMOSDB_TOKEN_KEY = "${COSMOS_KEY}"
+        env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
+        env.COSMOSDB_TOKEN_KEY = "${COSMOS_KEY}"
 
-            def reportsPath = "${Gatling.GATLING_REPORTS_DIR}"
+        def reportsPath = "${Gatling.GATLING_REPORTS_DIR}"
 
-            publishToCosmosDb(this,
-                              [environment: 'dev', product: 'some-webapp', component: 'backend'],
-                              "${WORKSPACE}/" + reportsPath,
-                              '**/*.json')
-        }
+        publishToCosmosDb(this,
+                          [environment: 'dev', product: 'some-webapp', component: 'backend'],
+                          "${WORKSPACE}/" + reportsPath,
+                          '**/*.json')
     }
 
 
