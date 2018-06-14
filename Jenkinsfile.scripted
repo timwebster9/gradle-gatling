@@ -23,8 +23,6 @@ node('mac') {
 
         // publish metrics to CosmosDB
         env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
-        env.COSMOSDB_TOKEN_KEY = "${COSMOS_KEY}"
-
         def reportsPath = "${Gatling.GATLING_REPORTS_DIR}"
 
         publishToCosmosDb(this,
