@@ -12,7 +12,7 @@ node('mac') {
 
     stage('Gatling Test') {
 
-        new Gatling().execute()
+        new Gatling(this).execute()
 
 //        withDocker('hmcts/moj-gatling-image:2.3.1-1.0', '--network="host" -v $WORKSPACE/src/gatling/conf:/etc/gatling/conf') {
 //
