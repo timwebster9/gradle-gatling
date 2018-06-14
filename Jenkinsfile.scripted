@@ -30,7 +30,7 @@ node('mac') {
 
             publishToCosmosDb(this,
                               [environment: 'dev', product: 'some-webapp', component: 'backend'],
-                              Gatling.GATLING_REPORTS_DIR,
+                              "${WORKSPACE}/" + Gatling.GATLING_REPORTS_RELATIVE_PATH,
                               '**/*.json')
         }
 
