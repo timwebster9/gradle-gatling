@@ -106,7 +106,7 @@ spec:
             steps {
                 container('java') {
                     withEnv(["BASE_URL=http://boot-app-service.${env.NAMESPACE}.svc.cluster.local"]) {
-                        sh './gradlew gatlingRun -sf $WORKSPACE/src/gatling/simulations'
+                        sh './gradlew gatlingRun'
                     }
                 }
             }
