@@ -1,4 +1,4 @@
-package simulations.default
+package default
 
 import scala.concurrent.duration._
 
