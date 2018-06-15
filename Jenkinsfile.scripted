@@ -12,6 +12,8 @@ node('mac') {
 
     stage('Gatling Test') {
 
+        env.BASE_URL='http://host.docker.internal:8080'
+
         // run gatling
         new Gatling(this).execute()
 
