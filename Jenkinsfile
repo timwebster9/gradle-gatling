@@ -66,14 +66,17 @@ spec:
         stage('Docker Build') {
             steps {
                 container('docker') {
-                   sh 'docker build -t timw/boot-app:1.0 .'
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        def image = docker.build('timwebster9/boot-app:2.0')
+                        image.push()
+                    }
                 }
             }
         }
         stage('Deploy App') {
             steps {
                 container('kubectl') {
-                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.simulations.default.svc'
+                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
                    sh 'kubectl apply -f spec.yaml'
                 }
             }
@@ -96,24 +99,12 @@ spec:
             steps {
                 container('java') {
                     withEnv(["BASE_URL=http://boot-app-service.${env.NAMESPACE}.svc.cluster.local"]) {
-                        sh './gradlew gatlingRun'
+                        sh './gradlew gatlingRun -sf $WORKSPACE/src/gatling/simulations'
                     }
                 }
             }
         }
-
-		//stage('Upload Gatling Reports') {
-		//	steps {
-		//		container('java') {
-		//			script {
-		//				dir('build/reports/gatling') {
-		//					azureUpload blobProperties: [cacheControl: '', contentEncoding: '', contentLanguage: '', contentType: '', detectContentType: true], containerName: 'gatling-store', fileShareName: '', filesPath: '**/*', storageCredentialId: 'azure-storage-account', storageType: 'blobstorage'
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-
+/**
         stage('Upload Gatling Reports') {
             steps {
                 container('azcopy') {
@@ -126,7 +117,7 @@ spec:
                 }
             }
         }
-
+*/
     }
     post {
         always {

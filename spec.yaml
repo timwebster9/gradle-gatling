@@ -26,7 +26,7 @@ spec:
         app: boot-app
     spec:
       containers:
-      - image: timw/boot-app:1.0
+      - image: timwebster9/boot-app:2.0
         name: boot-app
         ports:
         - containerPort: 8080
