@@ -69,7 +69,7 @@ spec:
                     script {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                             sh 'docker login -u $USERNAME -p $PASSWORD'
-                            sh 'docker  build -t timwebster9/boot-app:2.0'
+                            sh 'docker  build -t timwebster9/boot-app:2.0 .'
                             sh 'docker push timwebster9/boot-app:2.0'
                         }
                         //withCredentials('', 'dockerhub') {
