@@ -1,4 +1,4 @@
-package simulations.default
+package default
 
 object Environments {
 
