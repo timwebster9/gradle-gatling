@@ -36,4 +36,3 @@ and then reference the variable in your simulation:
 
     	val httpProtocol = http
     		.baseURL(Environments.baseUrl)
-
