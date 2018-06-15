@@ -66,9 +66,11 @@ spec:
         stage('Docker Build') {
             steps {
                 container('docker') {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        def image = docker.build('timwebster9/boot-app:2.0')
-                        image.push()
+                    script {
+                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                            def image = docker.build('timwebster9/boot-app:2.0')
+                            image.push()
+                        }
                     }
                 }
             }
