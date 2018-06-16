@@ -4,7 +4,7 @@ metadata:
   name: ${SERVICE_NAME}
 spec:
   selector:
-    app: boot-app
+    app: ${SERVICE_NAME}
   ports:
   - protocol: TCP
     port: 80
@@ -13,21 +13,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: boot-app
+  name: ${SERVICE_NAME}
 spec:
   selector:
     matchLabels:
-      app: boot-app
+      app: ${SERVICE_NAME}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: boot-app
+        app: ${SERVICE_NAME}
     spec:
       containers:
       - image: ${IMAGE_NAME}
-        name: boot-app
+        name: ${SERVICE_NAME}
         ports:
         - containerPort: 8080
           name: http

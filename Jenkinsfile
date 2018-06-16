@@ -53,12 +53,14 @@ spec:
             steps {
                 script {
                     setBranchName()
-                    env.NAMESPACE       = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
-                    env.APP_NAME        = 'boot-app'
-                    env.IMAGE_REPO      = 'timwebster9'
-                    env.IMAGE_BASE_NAME = "${IMAGE_REPO}/${APP_NAME}"
-                    env.DEMO_IMAGE_NAME = "${IMAGE_BASE_NAME}:${BRANCH_NAME}"
-                    env.CI_IMAGE_NAME   = "${DEMO_IMAGE_NAME}-${BUILD_NUMBER}"
+                    env.NAMESPACE         = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
+                    env.APP_NAME          = 'boot-app'
+                    env.IMAGE_REPO        = 'timwebster9'
+                    env.IMAGE_BASE_NAME   = "${IMAGE_REPO}/${APP_NAME}"
+                    env.DEMO_IMAGE_NAME   = "${IMAGE_BASE_NAME}:${BRANCH_NAME}"
+                    env.CI_IMAGE_NAME     = "${DEMO_IMAGE_NAME}-${BUILD_NUMBER}"
+                    env.CI_SERVICE_NAME   = "${APP_NAME}-${BRANCH_NAME}-${BUILD_NUMBER}"
+                    env.DEMO_SERVICE_NAME = "${APP_NAME}-${BRANCH_NAME}"
                 }
             }
         }
@@ -82,7 +84,7 @@ spec:
             steps {
                 container('kubectl') {
                     script {
-                        kubectlDeploy('spec', "ci-${APP_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlDeploy('spec', "${CI_SERVICE_NAME}", "${CI_IMAGE_NAME}")
                     }
                 }
             }
@@ -110,6 +112,7 @@ spec:
                 }
             }
         }
+        /*
         stage('Retag Docker Image') {
             steps {
                 container('docker') {
@@ -119,11 +122,14 @@ spec:
                 }
             }
         }
-        stage('Deploy App for Demo') {
+        */
+        stage('Promote to Demo Environment') {
             steps {
                 container('kubectl') {
                     script {
-                        kubectlDeploy('spec', "demo-${APP_NAME}", "${DEMO_IMAGE_NAME}")
+                        // in case this is the first time it runs
+                        kubectlDeploy('spec', "${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlUpdateDeployment("DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
                     }
                 }
             }
@@ -133,7 +139,7 @@ spec:
         always {
             container('kubectl') {
                 script {
-                    kubectlDelete("ci-${APP_NAME}")
+                    kubectlDelete("${CI_SERVICE_NAME}")
                 }
             }
         }
