@@ -95,7 +95,7 @@ spec:
                     timeout(5) {
                         waitUntil {
                            script {
-                             def r = sh script: "wget -q http://ci-boot-app.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
+                             def r = sh script: "wget -q http://${CI_SERVICE_NAME}.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
                              return (r == 0);
                            }
                         }
@@ -106,7 +106,7 @@ spec:
         stage('Performance Test') {
             steps {
                 container('java') {
-                    withEnv(["BASE_URL=http://ci-boot-app.${env.NAMESPACE}.svc.cluster.local"]) {
+                    withEnv(["BASE_URL=http://${CI_SERVICE_NAME}.${env.NAMESPACE}.svc.cluster.local"]) {
                         sh './gradlew gatlingRun'
                     }
                 }
