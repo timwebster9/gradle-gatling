@@ -85,9 +85,9 @@ spec:
         stage('Deploy App') {
             steps {
                 container('kubectl') {
-                   sh 'envsubst < spec.tmpl > spec.yaml'
-                   sh 'kubectl config set-cluster k8s --server=https://kubernetes.default.svc'
-                   sh 'kubectl apply -f spec.yaml'
+                    script {
+                        kubectlDeploy('spec')
+                    }
                 }
             }
         }
