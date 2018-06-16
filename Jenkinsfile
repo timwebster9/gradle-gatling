@@ -81,9 +81,8 @@ spec:
         stage('Deploy App for Test') {
             steps {
                 container('kubectl') {
-                    env.IMAGE_NAME = "${CI_IMAGE_NAME}"
                     script {
-                        kubectlDeploy('spec')
+                        kubectlDeploy('spec', 'ci-boot-app', "${CI_IMAGE_NAME}")
                     }
                 }
             }
@@ -111,12 +110,20 @@ spec:
                 }
             }
         }
+        stage('Retag Docker Image') {
+            steps {
+                container('docker') {
+                    script {
+                        tagDockerImage("${CI_IMAGE_NAME}", "${DEMO_IMAGE_NAME}")
+                    }
+                }
+            }
+        }
         stage('Deploy App for Demo') {
             steps {
                 container('kubectl') {
-                    env.IMAGE_NAME = "${DEMO_IMAGE_NAME}"
                     script {
-                        kubectlDeploy('spec')
+                        kubectlDeploy('spec', 'demo-boot-app', "${DEMO_IMAGE_NAME}")
                     }
                 }
             }
