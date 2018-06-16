@@ -60,6 +60,7 @@ spec:
                     env.DEMO_IMAGE_NAME   = "${IMAGE_BASE_NAME}:${BRANCH_NAME}"
                     env.CI_IMAGE_NAME     = "${DEMO_IMAGE_NAME}-${BUILD_NUMBER}"
                     env.CI_SERVICE_NAME   = "${APP_NAME}-${BRANCH_NAME}-${BUILD_NUMBER}"
+                    env.CI_APP_URL        = "http://${CI_SERVICE_NAME}.${NAMESPACE}.svc.cluster.local"
                     env.DEMO_SERVICE_NAME = "${APP_NAME}-${BRANCH_NAME}"
                 }
             }
@@ -95,7 +96,7 @@ spec:
                     timeout(5) {
                         waitUntil {
                            script {
-                             def r = sh script: "wget -q http://${CI_SERVICE_NAME}.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
+                             def r = sh script: "wget -q ${CI_APP_URL} -O /dev/null", returnStatus: true
                              return (r == 0);
                            }
                         }
@@ -106,7 +107,7 @@ spec:
         stage('Performance Test') {
             steps {
                 container('java') {
-                    withEnv(["BASE_URL=http://${CI_SERVICE_NAME}.${env.NAMESPACE}.svc.cluster.local"]) {
+                    withEnv(["BASE_URL=${CI_APP_URL}"]) {
                         sh './gradlew gatlingRun'
                     }
                 }
@@ -129,7 +130,7 @@ spec:
                     script {
                         // in case this is the first time it runs
                         kubectlDeploy('spec', "${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
-                        kubectlUpdateDeployment("DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlUpdateDeployment("$DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
                     }
                 }
             }
