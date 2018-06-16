@@ -52,6 +52,8 @@ spec:
         stage('Setup') {
             steps {
                 script {
+                    def branchName = getBranchName()
+                    currentBuild.displayName = "#${BUILD_NUMBER}: ${branchName}"
                     env.NAMESPACE = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
                 }
             }
