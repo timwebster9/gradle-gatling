@@ -130,7 +130,7 @@ spec:
                     script {
                         // in case this is the first time it runs
                         kubectlDeploy('spec', "${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
-                        kubectlUpdateDeployment("$DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlUpdateDeployment("${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
                     }
                 }
             }
