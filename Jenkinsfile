@@ -82,7 +82,7 @@ spec:
             steps {
                 container('kubectl') {
                     script {
-                        kubectlDeploy('spec', 'ci-boot-app', "${CI_IMAGE_NAME}")
+                        kubectlDeploy('spec', "ci-${APP_NAME}", "${CI_IMAGE_NAME}")
                     }
                 }
             }
@@ -93,7 +93,7 @@ spec:
                     timeout(5) {
                         waitUntil {
                            script {
-                             def r = sh script: "wget -q http://boot-app-service.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
+                             def r = sh script: "wget -q http://ci-boot-app.${env.NAMESPACE}.svc.cluster.local -O /dev/null", returnStatus: true
                              return (r == 0);
                            }
                         }
@@ -123,7 +123,7 @@ spec:
             steps {
                 container('kubectl') {
                     script {
-                        kubectlDeploy('spec', 'demo-boot-app', "${DEMO_IMAGE_NAME}")
+                        kubectlDeploy('spec', "demo-${APP_NAME}", "${DEMO_IMAGE_NAME}")
                     }
                 }
             }
@@ -132,9 +132,8 @@ spec:
     post {
         always {
             container('kubectl') {
-                env.IMAGE_NAME = "${CI_IMAGE_NAME}"
                 script {
-                    kubectlDelete('spec')
+                    kubectlDelete("ci-${APP_NAME}")
                 }
             }
         }
