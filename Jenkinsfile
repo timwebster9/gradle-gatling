@@ -104,7 +104,7 @@ spec:
         stage('Performance Test') {
             steps {
                 container('java') {
-                    withEnv(["BASE_URL=http://boot-app-service.${env.NAMESPACE}.svc.cluster.local"]) {
+                    withEnv(["BASE_URL=http://ci-boot-app.${env.NAMESPACE}.svc.cluster.local"]) {
                         sh './gradlew gatlingRun'
                     }
                 }
@@ -114,7 +114,7 @@ spec:
             steps {
                 container('docker') {
                     script {
-                        tagDockerImage("${CI_IMAGE_NAME}", "${DEMO_IMAGE_NAME}")
+                        tagDockerImage("${CI_IMAGE_NAME}", "${DEMO_IMAGE_NAME}", 'dockerhub')
                     }
                 }
             }
