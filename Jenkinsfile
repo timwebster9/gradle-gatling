@@ -53,7 +53,12 @@ spec:
             steps {
                 script {
                     setBranchName()
-                    env.NAMESPACE = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
+                    env.NAMESPACE       = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
+                    env.APP_NAME        = 'boot-app'
+                    env.IMAGE_REPO      = 'timwebster9'
+                    env.IMAGE_BASE_NAME = "${IMAGE_REPO}/${APP_NAME}"
+                    env.DEMO_IMAGE_NAME = "${IMAGE_BASE_NAME}:${BRANCH_NAME}"
+                    env.CI_IMAGE_NAME   = "${DEMO_IMAGE_NAME}-${BUILD_NUMBER}"
                 }
             }
         }
@@ -68,14 +73,15 @@ spec:
             steps {
                 container('docker') {
                     script {
-                        buildDockerImage("timwebster9/boot-app:${BRANCH_NAME}", 'dockerhub')
+                        buildDockerImage("${CI_IMAGE_NAME}", 'dockerhub')
                     }
                 }
             }
         }
-        stage('Deploy App') {
+        stage('Deploy App for Test') {
             steps {
                 container('kubectl') {
+                    env.IMAGE_NAME = "${CI_IMAGE_NAME}"
                     script {
                         kubectlDeploy('spec')
                     }
@@ -105,10 +111,21 @@ spec:
                 }
             }
         }
+        stage('Deploy App for Demo') {
+            steps {
+                container('kubectl') {
+                    env.IMAGE_NAME = "${DEMO_IMAGE_NAME}"
+                    script {
+                        kubectlDeploy('spec')
+                    }
+                }
+            }
+        }
     }
     post {
         always {
             container('kubectl') {
+                env.IMAGE_NAME = "${CI_IMAGE_NAME}"
                 script {
                     kubectlDelete('spec')
                 }
