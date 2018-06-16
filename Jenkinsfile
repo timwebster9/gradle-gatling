@@ -67,9 +67,9 @@ spec:
         stage('Docker Build') {
             steps {
                 container('docker') {
-                    script {
+                    //script {
                         buildDockerImage("timwebster9/boot-app:${BRANCH_NAME}", 'dockerhub')
-                    }
+                    //}
                 }
             }
         }
