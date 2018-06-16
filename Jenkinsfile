@@ -52,8 +52,7 @@ spec:
         stage('Setup') {
             steps {
                 script {
-                    env.BRANCH_NAME = getBranchName()
-                    currentBuild.displayName = "#${BUILD_NUMBER}: ${BRANCH_NAME}"
+                    setBranchName()
                     env.NAMESPACE = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
                 }
             }
@@ -69,15 +68,7 @@ spec:
             steps {
                 container('docker') {
                     script {
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                            sh 'docker login -u $USERNAME -p $PASSWORD'
-                            sh "docker  build -t timwebster9/boot-app:${BRANCH_NAME} ."
-                            sh "docker push timwebster9/boot-app:${BRANCH_NAME}"
-                        }
-                        //withCredentials('', 'dockerhub') {
-                        //    def image = docker.build("timwebster9/boot-app:${BRANCH_NAME}")
-                        //    image.push()
-                        //}
+                        buildDockerImage("timwebster9/boot-app:${BRANCH_NAME}", 'dockerhub')
                     }
                 }
             }
@@ -132,8 +123,9 @@ spec:
     post {
         always {
             container('kubectl') {
-               //sh 'kubectl config set-cluster k8s --server=https://kubernetes.simulations.default.svc'
-               sh 'kubectl delete -f spec.yaml'
+                script {
+                    kubectlDelete('spec')
+                }
             }
         }
     }
