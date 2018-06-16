@@ -52,8 +52,8 @@ spec:
         stage('Setup') {
             steps {
                 script {
-                    def branchName = getBranchName()
-                    currentBuild.displayName = "#${BUILD_NUMBER}: ${branchName}"
+                    env.BRANCH_NAME = getBranchName()
+                    currentBuild.displayName = "#${BUILD_NUMBER}: ${BRANCH_NAME}"
                     env.NAMESPACE = sh returnStdout: true, script: 'cat /var/run/secrets/kubernetes.io/serviceaccount/namespace'
                 }
             }
@@ -75,7 +75,7 @@ spec:
                             sh 'docker push timwebster9/boot-app:2.0'
                         }
                         //withCredentials('', 'dockerhub') {
-                        //    def image = docker.build('timwebster9/boot-app:2.0')
+                        //    def image = docker.build("timwebster9/boot-app:${BRANCH_NAME}")
                         //    image.push()
                         //}
                     }
