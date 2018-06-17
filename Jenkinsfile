@@ -129,7 +129,7 @@ spec:
                 container('kubectl') {
                     script {
                         // in case this is the first time it runs
-                        //kubectlDeploy('spec', "${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlDeploy('spec', ["SERVICE_NAME=${DEMO_SERVICE_NAME}", "IMAGE_NAME=${CI_IMAGE_NAME}"])
                         kubectlUpdateDeployment("${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
 
                         // update ingress
