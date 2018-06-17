@@ -85,11 +85,12 @@ spec:
             steps {
                 container('kubectl') {
                     script {
-                        kubectlDeploy('spec', "${CI_SERVICE_NAME}", "${CI_IMAGE_NAME}")
+                        kubectlDeploy('spec', ['SERVICE_NAME': "${CI_SERVICE_NAME}", 'IMAGE_NAME': "${CI_IMAGE_NAME}"])
                     }
                 }
             }
         }
+                /*
         stage('Wait for App') {
             steps {
                 container('alpine') {
@@ -113,7 +114,6 @@ spec:
                 }
             }
         }
-        /*
         stage('Retag Docker Image') {
             steps {
                 container('docker') {
@@ -133,7 +133,7 @@ spec:
                         kubectlUpdateDeployment("${DEMO_SERVICE_NAME}", "${CI_IMAGE_NAME}")
 
                         // update ingress
-                        kubectlDeploy('ingress', "${DEMO_SERVICE_NAME}", "")
+                        kubectlDeploy('ingress', ['SERVICE_NAME': "${DEMO_SERVICE_NAME}"], "")
                     }
                 }
             }
@@ -143,7 +143,7 @@ spec:
         always {
             container('kubectl') {
                 script {
-                    kubectlDelete("${CI_SERVICE_NAME}")
+                    kubectlDelete('spec', ['SERVICE_NAME': "${CI_SERVICE_NAME}", 'IMAGE_NAME': "${CI_IMAGE_NAME}"])
                 }
             }
         }
