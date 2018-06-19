@@ -10,7 +10,7 @@ node('mac') {
         def scmInfo = checkout scm
 
         scmInfo.each { k,v ->
-            echo 'key: $k, value: $v'
+            echo "key: ${k}, value: ${v}"
         }
     }
 
