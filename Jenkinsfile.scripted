@@ -8,6 +8,10 @@ node('mac') {
 
     stage('Checkout') {
         checkout scm
+
+        scm.each { k,v ->
+            echo 'key: $k, value: $v'
+        }
     }
 
     stage('Gatling Test') {
