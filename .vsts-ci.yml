@@ -1,0 +1,5 @@
+queue: Hosted Linux Preview
+
+steps:
+
+- task: Gradle@2
