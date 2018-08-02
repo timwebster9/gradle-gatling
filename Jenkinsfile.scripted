@@ -11,7 +11,7 @@ node('neptune') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/docker-agent:1.0', '-u 1001:1001') {
+        withDocker('hmcts/docker-agent:1.0', '-u root') {
             addVersionInfo()
         }
     }
@@ -19,7 +19,7 @@ node('neptune') {
 
 def addVersionInfo() {
     steps.sh '''
-mkdir -p src/main/resources/META-INF
+mkdir -p ${WORKSPACE}/src/main/resources/META-INF
 echo "allprojects { task printVersionInit { doLast { println project.version } } }" > init.gradle
 tee src/main/resources/META-INF/build-info.properties <<EOF 2>/dev/null
 build.version=$(./gradlew --init-script init.gradle -q :printVersionInit)
