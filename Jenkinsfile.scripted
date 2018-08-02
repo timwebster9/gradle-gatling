@@ -11,7 +11,7 @@ node('neptune') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/docker-agent:1.0', null) {
+        withDocker('hmcts/docker-agent:1.0', '-u 1001:1001') {
             addVersionInfo()
         }
     }
