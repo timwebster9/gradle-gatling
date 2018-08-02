@@ -1,6 +1,6 @@
 import com.timw.Gatling
 
-node('mac') {
+node('neptune') {
 
     stage('cleanup') {
         deleteDir()
