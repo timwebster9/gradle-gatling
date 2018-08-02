@@ -7,36 +7,25 @@ node('mac') {
     }
 
     stage('Checkout') {
-        def scmInfo = checkout scm
-
-        scmInfo.each { k,v ->
-            echo "key: ${k}, value: ${v}"
-        }
+        checkout scm
     }
 
     stage('Gatling Test') {
-
-        env.BASE_URL='http://host.docker.internal:8080'
-
-        // run gatling
-        new Gatling(this).execute()
-
-        // gatling plugin
-        gatlingArchive()
-
-        // upload reports to Azure Blob storage
-        //azureBlobUpload('buildlog-storage-account', Gatling.GATLING_REPORTS_DIR, "performance/${product}-${component}/${environment}")
-
-        // publish metrics to CosmosDB
-        env.COSMOSDB_URL       = 'https://performancedb.documents.azure.com/'
-        def reportsPath = "${Gatling.GATLING_REPORTS_PATH}"
-
-        publishToCosmosDb(this,
-                          [environment: 'dev', product: 'some-webapp', component: 'backend'],
-                          "${WORKSPACE}/" + reportsPath,
-                          '**/*.json')
+        withDocker('hmcts/docker-agent:1.0') {
+            addVersionInfo()
+        }
     }
+}
 
-
-
+def addVersionInfo() {
+    steps.sh '''
+mkdir -p src/main/resources/META-INF
+echo "allprojects { task printVersionInit { doLast { println project.version } } }" > init.gradle
+tee src/main/resources/META-INF/build-info.properties <<EOF 2>/dev/null
+build.version=$(./gradlew --init-script init.gradle -q :printVersionInit)
+build.number=${BUILD_NUMBER}
+build.commit=$(git rev-parse HEAD)
+build.date=$(date)
+EOF
+'''
 }
