@@ -1,21 +1,25 @@
 import com.timw.Gatling
 
-node('neptune') {
+withDocker('hmcts/docker-agent:1.0', '-u root') {
+    node('neptune') {
 
-    stage('cleanup') {
-        deleteDir()
-    }
+        stage('cleanup') {
+            deleteDir()
+        }
 
-    stage('Checkout') {
-        checkout scm
-    }
+        stage('Checkout') {
+            checkout scm
+        }
 
-    stage('Gatling Test') {
-        withDocker('hmcts/docker-agent:1.0', '-u root') {
-            addVersionInfo()
+        stage('Gatling Test') {
+            withDocker('hmcts/docker-agent:1.0', '-u root') {
+                addVersionInfo()
+            }
         }
     }
 }
+
+
 
 def addVersionInfo() {
     steps.sh '''
