@@ -11,7 +11,7 @@ node('mac') {
     }
 
     stage('Gatling Test') {
-        withDocker('hmcts/docker-agent:1.0') {
+        withDocker('hmcts/docker-agent:1.0', null) {
             addVersionInfo()
         }
     }
