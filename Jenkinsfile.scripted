@@ -12,7 +12,7 @@ withDocker('hmcts/docker-agent:1.0', '-u root') {
         }
 
         stage('Gatling Test') {
-            withDocker('hmcts/docker-agent:1.0', '-u root') {
+            withDocker('hmcts/docker-agent:1.0', null) {
                 addVersionInfo()
             }
         }
